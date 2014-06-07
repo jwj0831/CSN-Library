@@ -9,6 +9,9 @@ public class SNDefaultMetadata extends SeedMetadata {
     private String topicName;
     private int alive;
 
+    public SNDefaultMetadata() {
+    }
+
     public SNDefaultMetadata(String name, Set<String> members, String id, String creationTime, String removalTime, String topicName, int alive) {
         super(name, members);
         this.id = id;

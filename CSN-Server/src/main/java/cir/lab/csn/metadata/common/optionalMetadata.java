@@ -2,10 +2,10 @@ package cir.lab.csn.metadata.common;
 
 import java.util.Map;
 
-public class optionalMetadata {
+public class OptionalMetadata {
     private Map<String,String> elmts;
 
-    public optionalMetadata() {
+    public OptionalMetadata() {
     }
 
     public Map<String, String> getElmts() {
@@ -18,7 +18,7 @@ public class optionalMetadata {
 
     @Override
     public String toString() {
-        return "AdditionalMetadata{" +
+        return "OptionalMetadata{" +
                 "elmts=" + elmts +
                 '}';
     }

@@ -5,6 +5,9 @@ import java.util.Set;
 public class TagMetadata {
     private Set<String> tags;
 
+    public TagMetadata() {
+    }
+
     public Set<String> getTags() {
         return tags;
     }

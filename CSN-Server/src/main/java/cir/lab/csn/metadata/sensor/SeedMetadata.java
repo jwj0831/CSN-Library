@@ -4,6 +4,14 @@ public class SeedMetadata {
     private String name;
     private String measure;
 
+    public SeedMetadata() {
+    }
+
+    public SeedMetadata(String name, String measure) {
+        this.name = name;
+        this.measure = measure;
+    }
+
     public String getName() {
         return name;
     }

@@ -1,21 +1,23 @@
-package cir.lab.csn.metadata.network;
+package cir.lab.csn.metadata.sensor;
 
 import cir.lab.csn.metadata.common.OptionalMetadata;
 import cir.lab.csn.metadata.common.TagMetadata;
 
-public class SensorNetworkMetadata {
-    private SNDefaultMetadata def_meta;
+public class SensorMetadata {
+    private DefaultMetadata def_meta;
     private OptionalMetadata opt_meta = new OptionalMetadata();;
     private TagMetadata snsr_tag = new TagMetadata();
 
-    public SensorNetworkMetadata() {
+
+
+    public SensorMetadata() {
     }
 
-    public SNDefaultMetadata getDef_meta() {
+    public DefaultMetadata getDef_meta() {
         return def_meta;
     }
 
-    public void setDef_meta(SNDefaultMetadata def_meta) {
+    public void setDef_meta(DefaultMetadata def_meta) {
         this.def_meta = def_meta;
     }
 
@@ -37,7 +39,7 @@ public class SensorNetworkMetadata {
 
     @Override
     public String toString() {
-        return "SensorNetworkMetadata{" +
+        return "SensorMetadata{" +
                 "def_meta=" + def_meta +
                 ", opt_meta=" + opt_meta +
                 ", snsr_tag=" + snsr_tag +
