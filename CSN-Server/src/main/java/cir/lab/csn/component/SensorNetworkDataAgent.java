@@ -9,9 +9,6 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
-/**
- * Created by nfm on 2014. 5. 20..
- */
 public class SensorNetworkDataAgent {
     private DataSubscriberThread subsThread;
     private DataPublisherThread pubThread;
@@ -80,7 +77,6 @@ public class SensorNetworkDataAgent {
         subsThread.setStopped(true);
         return 0;
     }
-
 
     protected int getSensorNetworkManagerStatusInternal() {
         return 0;

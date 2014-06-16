@@ -63,12 +63,9 @@ public class DataPersistenceWorkerThread extends Thread {
 
     public static class EventListener implements MessageListener {
         Logger logger = LoggerFactory.getLogger(EventListener.class);
-
-        private SensorData sensorData;
         private SensorDataPersistenceDAO dao;
 
         public EventListener() {
-            sensorData = null;
             dao = new CSNDAOFactory().sensorDataPersistenceDAO();
         }
 
@@ -78,7 +75,7 @@ public class DataPersistenceWorkerThread extends Thread {
                 String timestamp = message.getStringProperty("time");
                 String val = message.getStringProperty("val");
                 logger.info("Sensor ID: {} timestamp: {} val: {}", snsrURI, timestamp, val);
-                sensorData = new SensorData(snsrURI, timestamp, val);
+                SensorData sensorData = new SensorData(snsrURI, timestamp, val);
                 dao.add(sensorData);
                 logger.info("Add Sensor Data to DB");
             } catch (Exception e) {

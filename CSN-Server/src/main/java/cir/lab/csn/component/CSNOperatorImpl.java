@@ -1,5 +1,6 @@
 package cir.lab.csn.component;
 
+import cir.lab.csn.client.BrokerManager;
 import cir.lab.csn.client.CSNOperator;
 import cir.lab.csn.metadata.csn.CSNConfigMetadata;
 import cir.lab.csn.data.SensorNetworkList;
@@ -8,9 +9,6 @@ import cir.lab.csn.util.TimeGeneratorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by nfm on 2014. 5. 20..
- */
 public class CSNOperatorImpl implements CSNOperator {
     private CSNConfigMetadata csnConfigMetadata;
     private SensorNetworkManager sensorNetworkManager;
@@ -46,7 +44,7 @@ public class CSNOperatorImpl implements CSNOperator {
 
     private void createSubModuleInstance() {
         this.setSensorNetworkManager(new SensorNetworkManagerImpl());
-        this.setBrokerManager(new BrokerManager());
+        this.setBrokerManager(new BrokerManagerImpl());
         this.setDataAgent(new SensorNetworkDataAgent());
         this.setHistoricalDataManager(new HistoricalDataManager());
     }
@@ -60,7 +58,7 @@ public class CSNOperatorImpl implements CSNOperator {
         brokerManager.startBroker();
 
         try {
-            int waitSec = 2;
+            int waitSec = 1;
             logger.info("Waiting {} secs...", waitSec);
             Thread.sleep( waitSec * 1000 );
         } catch (InterruptedException e) {
@@ -76,8 +74,6 @@ public class CSNOperatorImpl implements CSNOperator {
     @Override
     public int restartSystem() {
         logger.info("Restarting Sensor Network Manager");
-        //dataAgent.restartSensorNetworkDataAgentThreads();
-        //historicalDataManager.restartPersistenceWorkerThread();
         stopSystem();
 
         try {
@@ -115,47 +111,29 @@ public class CSNOperatorImpl implements CSNOperator {
         return csnConfigMetadata;
     }
 
-    public void setCsnConfigMetadata(CSNConfigMetadata csnConfigMetadata) {
-        this.csnConfigMetadata = csnConfigMetadata;
-    }
-
     @Override
     public SensorNetworkManager getSensorNetworkManager() {
         return sensorNetworkManager;
+    }
+
+    @Override
+    public BrokerManager getBrokerManager() {
+        return brokerManager;
     }
 
     public void setSensorNetworkManager(SensorNetworkManager sensorNetworkManager) {
         this.sensorNetworkManager = sensorNetworkManager;
     }
 
-    public BrokerManager getBrokerManager() {
-        return brokerManager;
-    }
-
     public void setBrokerManager(BrokerManager brokerManager) {
         this.brokerManager = brokerManager;
-    }
-
-    public SensorNetworkDataAgent getDataAgent() {
-        return dataAgent;
     }
 
     public void setDataAgent(SensorNetworkDataAgent dataAgent) {
         this.dataAgent = dataAgent;
     }
 
-    public HistoricalDataManager getHistoricalDataManager() {
-        return historicalDataManager;
-    }
-
     public void setHistoricalDataManager(HistoricalDataManager historicalDataManager) {
         this.historicalDataManager = historicalDataManager;
-    }
-
-
-
-    @Override
-    public int getBrokerMessageNum() {
-        return 0;
     }
 }

@@ -26,15 +26,15 @@
                 </policyEntries>
             </policyMap>
         </destinationPolicy>
-		
-		<managementContext>
-			<managementContext useMBeanServer="true" createConnector="false" />
-		</managementContext>
-		
+
 		<persistenceAdapter>
 			<kahaDB directory="activeMQ/kahadb" />
 		</persistenceAdapter>
-		
+
+        <managementContext>
+            <managementContext createMBeanServer="true" />
+        </managementContext>
+
 		<systemUsage>
 			<systemUsage>
 				<memoryUsage>
@@ -48,12 +48,10 @@
 				</tempUsage>
 			</systemUsage>
 		</systemUsage>
-		
-		<transportConnectors>
-			<transportConnector name="openwire" id="tcp://0.0.0.0:61616?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600" />
-			<transportConnector name="mqtt" id="mqtt://0.0.0.0:1883?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600"/>
-		</transportConnectors>
-		
+        <transportConnectors>
+            <transportConnector name="openwire" uri="tcp://0.0.0.0:61616?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600" />
+            <transportConnector name="mqtt" uri="mqtt://0.0.0.0:1883?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600"/>
+        </transportConnectors>
 	</broker>
 </beans>
            

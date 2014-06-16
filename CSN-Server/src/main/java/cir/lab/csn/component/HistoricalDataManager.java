@@ -4,9 +4,6 @@ import cir.lab.csn.component.thread.DataPersistenceWorkerThread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by nfm on 2014. 5. 28..
- */
 public class HistoricalDataManager {
     private DataPersistenceWorkerThread persistenceWorkerThread;
 

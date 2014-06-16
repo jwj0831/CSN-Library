@@ -25,7 +25,7 @@ public class SensorDataPersistenceDAO {
         DAOReturnType retType = DAOReturnType.RETURN_OK;
         try {
             Connection c = connectionMaker.makeConnection();
-            PreparedStatement ps = c.prepareStatement("INSERT INTO " + SNSR_PERSIST_TABLE_NM + "(snsr_uri, snsr_time, snsr_val) VALUES(?, ?, ?)");
+            PreparedStatement ps = c.prepareStatement("INSERT INTO " + SNSR_PERSIST_TABLE_NM + "(snsr_id, snsr_time, snsr_val) VALUES(?, ?, ?)");
 
             ps.setString(1, sensorData.getUri());
             ps.setString(2, sensorData.getTime());

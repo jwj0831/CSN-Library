@@ -17,10 +17,11 @@ public class TestMQTTClient implements MqttCallback {
     MqttConnectOptions connOpt;
     private ObjectMapper jsonMapper;
 
+    //static final String BROKER_URL = "tcp://117.16.146.55:1883";
     static final String BROKER_URL = "tcp://localhost:1883";
-    static final String NODE_ID = "/N1/1401539641807";
+    static final String NODE_ID = "Yun-1-1402907293169";
     static final String TOPIC_NAME = "CSN/CENTRAL/DATA";
-    static final int MSG_NUM = 10;
+    static final int MSG_NUM = 15;
 
     public void connectionLost(Throwable t) {
         System.out.println("Connection lost!");

@@ -1,5 +1,6 @@
 package cir.lab.csn.cli;
 
+import cir.lab.csn.client.BrokerManager;
 import cir.lab.csn.client.CSNOperator;
 import cir.lab.csn.client.ServiceOperatorProvider;
 import cir.lab.csn.client.SensorNetworkManager;
@@ -12,6 +13,7 @@ import java.util.*;
 public class CLITestMain {
     private CSNOperator service;
     private SensorNetworkManager sensorNetworkManager;
+    private BrokerManager brokerManager;
     private Scanner sc;
 
     public static void main(String args[]) {
@@ -19,7 +21,7 @@ public class CLITestMain {
         system.startTest();
 
         try {
-            Thread.sleep(3000);
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -34,6 +36,7 @@ public class CLITestMain {
         service.startSystem();
         sc = new Scanner(System.in);
         sensorNetworkManager = service.getSensorNetworkManager();
+        brokerManager = service.getBrokerManager();
     }
 
     private void startCLIInterface() {
@@ -44,6 +47,7 @@ public class CLITestMain {
             System.out.println("1. Log out");
             System.out.println("2. Create Sensor Meta");
             System.out.println("3. Create Sensor Network");
+            System.out.println("4. Get Broker Status");
             System.out.print("Choose Command: ");
             commandType = sc.nextInt();
             sc.nextLine();
@@ -58,6 +62,37 @@ public class CLITestMain {
                 case 3:
                     this.createSensorNetwork();
                     break;
+                case 4:
+                    System.out.println("Broker Total Enqueue #: " + brokerManager.getTotalEnqueueCount());
+                    System.out.println("Broker Total Dequeue #: " + brokerManager.getTotalDequeueCount());
+                    System.out.println("Broker Total Consumer #: " + brokerManager.getTotalConsumerCount());
+                    System.out.println("Broker Total Producer #: " + brokerManager.getTotalProducerCount());
+                    System.out.println("Broker Storage %: " + brokerManager.getStoreUsagePercentage());
+                    System.out.println("Broker Memory %: " + brokerManager.getMemoryUsagePercentage());
+                    break;
+                case 5:
+                    Map<String, Long> enqMap = brokerManager.getTopicEnqueueCount();
+                    for(String key : enqMap.keySet())
+                        System.out.println("Topic '" + key +"' Enq. Num: " + enqMap.get(key));
+                    break;
+                case 6:
+                    Map<String, Long> deqMap = brokerManager.getTopicDequeueCount();
+                    for(String key : deqMap.keySet())
+                        System.out.println("Topic '" + key +"' Deq. Num: " + deqMap.get(key));
+                    break;
+                case 7:
+                    Map<String, Long> conMap = brokerManager.getTopicConsumerCount();
+                    for(String key : conMap.keySet())
+                        System.out.println("Topic '" + key +"' Con. Num: " + conMap.get(key));
+                    break;
+                case 8:
+                    Map<String, Set<String>> subMap = brokerManager.getTopicSubscribers();
+                    for(String key : subMap.keySet())
+                        for(String subs : subMap.get(key))
+                            System.out.println("Topic '" + key +"' Subscriber: " + subs);
+                    break;
+                case 9:
+                    System.out.println("Currnet Health Status :" + brokerManager.getCurrentHealthStatus());
                 default:
                     System.out.println("Wrong Command");
                     break;
