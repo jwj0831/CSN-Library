@@ -109,6 +109,69 @@ public class SensorNetworkMetadataDAO {
         return idSet;
     }
 
+    public int getAliveSensorNetworkNum() {
+        Set<String> idSet = getAllSensorNetworkID();
+        return idSet.size();
+    }
+
+    public int getDeadSensorNetworkNum() {
+        Set<String> idSet = null;
+        try {
+            idSet = new HashSet<String>();
+            Connection c = connectionMaker.makeConnection();
+            PreparedStatement ps = c.prepareStatement("SELECT sn_id FROM " + SN_DEFAULT_META_TABLE_NM + " WHERE sn_alive=?");
+            ps.setInt(1,0);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next())
+                idSet.add(rs.getString("sn_id"));
+
+            ps.close();
+            c.close();
+        } catch (Exception e) {
+            ExceptionProcessor.handleException(e, this.getClass().getName());
+        }
+        return idSet.size();
+    }
+
+    public int getAllSensorNetworkNum() {
+        Set<String> idSet = null;
+        try {
+            idSet = new HashSet<String>();
+            Connection c = connectionMaker.makeConnection();
+            PreparedStatement ps = c.prepareStatement("SELECT sn_id FROM " + SN_DEFAULT_META_TABLE_NM );
+            ResultSet rs = ps.executeQuery();
+            while(rs.next())
+                idSet.add(rs.getString("sn_id"));
+
+            ps.close();
+            c.close();
+        } catch (Exception e) {
+            ExceptionProcessor.handleException(e, this.getClass().getName());
+        }
+        return idSet.size();
+    }
+
+    public Set<String> getSensorNetworkIDs(int index, int num) {
+        Set<String> idSet = null;
+        try {
+            idSet = new HashSet<String>();
+            Connection c = connectionMaker.makeConnection();
+            PreparedStatement ps = c.prepareStatement("SELECT sn_id FROM " + SN_DEFAULT_META_TABLE_NM + " WHERE sn_alive=? ORDER BY sn_id ASC LIMIT ?, ?");
+            ps.setInt(1,1);
+            ps.setInt(2, index);
+            ps.setInt(3, num);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next())
+                idSet.add(rs.getString("sn_id"));
+
+            ps.close();
+            c.close();
+        } catch (Exception e) {
+            ExceptionProcessor.handleException(e, this.getClass().getName());
+        }
+        return idSet;
+    }
+
     public String getSensorNetworkTopicNameByID(String id) {
         String topicName = null;
         try {
@@ -136,6 +199,29 @@ public class SensorNetworkMetadataDAO {
             Connection c = connectionMaker.makeConnection();
             PreparedStatement ps = c.prepareStatement("SELECT sn_topic_name FROM " + SN_DEFAULT_META_TABLE_NM + " WHERE sn_alive=?");
             ps.setInt(1,1);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                topicSet.add(rs.getString("sn_topic_name"));
+            }
+
+            ps.close();
+            c.close();
+        } catch (Exception e) {
+            ExceptionProcessor.handleException(e, this.getClass().getName());
+            topicSet = null;
+        }
+        return topicSet;
+    }
+
+    public Set<String> getSensorNetworkTopicNames(int index, int num) {
+        Set<String> topicSet;
+        try {
+            topicSet = new HashSet<String>();
+            Connection c = connectionMaker.makeConnection();
+            PreparedStatement ps = c.prepareStatement("SELECT sn_topic_name FROM " + SN_DEFAULT_META_TABLE_NM + " WHERE sn_alive=? ORDER BY sn_id ASC LIMIT ?, ?");
+            ps.setInt(1,1);
+            ps.setInt(2, index);
+            ps.setInt(3, num);
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
                 topicSet.add(rs.getString("sn_topic_name"));
@@ -581,19 +667,19 @@ public class SensorNetworkMetadataDAO {
             if(defaultSensorNetworkMetadata == null)
                 throw new Exception("Can't Get Default Sensor Network Metadata");
             else
-                sensorNetworkMetadata.setDef_meta(defaultSensorNetworkMetadata);
+                sensorNetworkMetadata.setDefMeta(defaultSensorNetworkMetadata);
 
             Map<String, String> optionalMetadataMap = getAllOptionalSensorNetworkMetadataMap(id);
             if(optionalMetadataMap == null)
                 throw new Exception("Can't Get Optional Sensor Network Metadata");
             else
-                sensorNetworkMetadata.getOpt_meta().setElmts(optionalMetadataMap);
+                sensorNetworkMetadata.setOptMeta(optionalMetadataMap);
 
             Set<String> tagSet = getAllTagBySensorNetworkID(id);
             if(tagSet == null)
                 throw new Exception("Can't Get Sensor Network Tags");
             else
-                sensorNetworkMetadata.getSnsr_tag().setTags(tagSet);
+                sensorNetworkMetadata.setSnTags(tagSet);
         } catch (Exception e) {
             ExceptionProcessor.handleException(e, this.getClass().getName());
             sensorNetworkMetadata = null;

@@ -22,6 +22,8 @@ public interface SensorNetworkManager {
      */
     public String createSensorMetadata(String name, String measurement);
 
+    public String createSensorMetadata(SensorMetadata metadata);
+
     /**
      * This method checks if the key is registered or not.
      * @param key sensor's authentication key
@@ -41,6 +43,10 @@ public interface SensorNetworkManager {
      * @return If successfully done, it returns all the ID set of sensors, or null.
      */
     public Set<String> getAllSensorID();
+
+    public int getAllSensorNum();
+
+    public Set<String> getSensorIDs(int index, int num);
 
     /**
      * This method returns the default metadata of a sensor.
@@ -223,11 +229,21 @@ public interface SensorNetworkManager {
      */
     public String createSensorNetworkMetadata(String name, Set<String> members);
 
+    public String createSensorNetworkMetadata(SensorNetworkMetadata metadata);
+
     /**
      * This method returns all the id of sensor networks in CSN.
      * @return If successfully done, it returns all the ID set of sensors, or null.
      */
     public Set<String> getAllSensorNetworkID();
+
+    public int getAliveSensorNetworkNum();
+
+    public int getDeadSensorNetworkNum();
+
+    public int getAllSensorNetworkNum();
+
+    public Set<String> getSensorNetworkIDs(int index, int num);
 
     /**
      * This method returns the topic name of a sensor networks in CSN.
@@ -241,6 +257,8 @@ public interface SensorNetworkManager {
      * @return If successfully done, it returns all the Topic Name of sensor network, or null.
      */
     public Set<String> getAllSensorNetworkTopicName();
+
+    public Set<String> getSensorNetworkTopicNames(int index, int num);
 
     /**
      * This method returns the default metadata of a sensor network.

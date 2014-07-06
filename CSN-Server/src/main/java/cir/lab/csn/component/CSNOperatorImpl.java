@@ -15,6 +15,7 @@ public class CSNOperatorImpl implements CSNOperator {
     private BrokerManager brokerManager;
     private SensorNetworkDataAgent dataAgent;
     private HistoricalDataManager historicalDataManager;
+    private boolean working = false;
 
     Logger logger = LoggerFactory.getLogger(CSNOperatorImpl.class);
 
@@ -24,7 +25,7 @@ public class CSNOperatorImpl implements CSNOperator {
 
     public CSNOperatorImpl(String name, CSNConfigMetadata configMetadata){
         csnConfigMetadata = configMetadata;
-        csnConfigMetadata.setName(name);
+        csnConfigMetadata.setCsnName(name);
         csnConfigMetadata.setCreationTime(TimeGeneratorUtil.getCurrentTimestamp());
 }
 
@@ -68,6 +69,7 @@ public class CSNOperatorImpl implements CSNOperator {
         logger.info("Starting Sensor Network Manager");
         dataAgent.startSensorNetworkDataAgentThreads();
         historicalDataManager.startPersistenceWorkerThread();
+        working = true;
         return 0;
     }
 
@@ -102,8 +104,14 @@ public class CSNOperatorImpl implements CSNOperator {
             e.printStackTrace();
         }
         logger.info("Stopping Broker");
-       brokerManager.stopBroker();
+        brokerManager.stopBroker();
+        working = false;
         return 0;
+    }
+
+    @Override
+    public boolean isCSNWorking() {
+        return working;
     }
 
     @Override
@@ -119,6 +127,11 @@ public class CSNOperatorImpl implements CSNOperator {
     @Override
     public BrokerManager getBrokerManager() {
         return brokerManager;
+    }
+
+    @Override
+    public HistoricalDataManager getHistoricalDataManager() {
+        return historicalDataManager;
     }
 
     public void setSensorNetworkManager(SensorNetworkManager sensorNetworkManager) {

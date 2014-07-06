@@ -162,29 +162,37 @@ public class BrokerManagerImpl implements BrokerManager {
     }
 
     @Override
-    public Map<String, Long> getTopicEnqueueCount() {
+    public Set<Map<String, Object>> getTopicEnqueueCount() {
         getBrokerMBean();
         ObjectName[] names = brokerMBean.getTopics();
-        Map<String, Long> map = new HashMap<String, Long>();
+        Set<Map<String, Object>> topicSet = new HashSet<Map<String, Object>>();
         for(ObjectName name : names) {
             TopicViewMBean topicMBean = (TopicViewMBean) MBeanServerInvocationHandler.newProxyInstance(mBeanConn, name, TopicViewMBean.class, true);
-            if(topicMBean.getName().substring(0, 8).compareTo("ActiveMQ") != 0)
-                map.put(topicMBean.getName(), topicMBean.getEnqueueCount());
+            if(topicMBean.getName().substring(0, 8).compareTo("ActiveMQ") != 0) {
+                Map<String, Object> tempMap = new HashMap<String, Object>();
+                tempMap.put("topicName", topicMBean.getName());
+                tempMap.put("num", topicMBean.getEnqueueCount());
+                topicSet.add(tempMap);
+            }
         }
-        return map;
+        return topicSet;
     }
 
     @Override
-    public Map<String, Long> getTopicDequeueCount() {
+    public Set<Map<String, Object>> getTopicDequeueCount() {
         getBrokerMBean();
         ObjectName[] names = brokerMBean.getTopics();
-        Map<String, Long> map = new HashMap<String, Long>();
+        Set<Map<String, Object>>  topicSet = new HashSet<Map<String, Object>>();
         for(ObjectName name : names) {
             TopicViewMBean topicMBean = (TopicViewMBean) MBeanServerInvocationHandler.newProxyInstance(mBeanConn, name, TopicViewMBean.class, true);
-            if(topicMBean.getName().substring(0, 8).compareTo("ActiveMQ") != 0)
-                map.put(topicMBean.getName(), topicMBean.getDequeueCount());
+            if(topicMBean.getName().substring(0, 8).compareTo("ActiveMQ") != 0) {
+                Map<String, Object> tempMap = new HashMap<String, Object>();
+                tempMap.put("topicName", topicMBean.getName());
+                tempMap.put("num", topicMBean.getDequeueCount());
+                topicSet.add(tempMap);
+            }
         }
-        return map;
+        return topicSet;
     }
 
     @Override

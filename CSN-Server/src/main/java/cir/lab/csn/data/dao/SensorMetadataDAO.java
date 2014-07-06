@@ -47,14 +47,50 @@ public class SensorMetadataDAO {
         return retType;
     }
 
-
-
     public Set<String> getAllSensorID() {
         Set<String> idSet = null;
         try {
             idSet = new HashSet<String>();
             Connection c = connectionMaker.makeConnection();
             PreparedStatement ps = c.prepareStatement("SELECT snsr_id FROM " + SNSR_DEFAULT_META_TABLE_NM);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next())
+                idSet.add(rs.getString("snsr_id"));
+
+            ps.close();
+            c.close();
+        } catch (Exception e) {
+            ExceptionProcessor.handleException(e, this.getClass().getName());
+        }
+        return idSet;
+    }
+
+    public int getAllSensorNum() {
+        Set<String> idSet = null;
+        try {
+            idSet = new HashSet<String>();
+            Connection c = connectionMaker.makeConnection();
+            PreparedStatement ps = c.prepareStatement("SELECT snsr_id FROM " + SNSR_DEFAULT_META_TABLE_NM);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next())
+                idSet.add(rs.getString("snsr_id"));
+
+            ps.close();
+            c.close();
+        } catch (Exception e) {
+            ExceptionProcessor.handleException(e, this.getClass().getName());
+        }
+        return idSet.size();
+    }
+
+    public Set<String> getSensorIDs(int index, int num) {
+        Set<String> idSet = null;
+        try {
+            idSet = new HashSet<String>();
+            Connection c = connectionMaker.makeConnection();
+            PreparedStatement ps = c.prepareStatement("SELECT snsr_id FROM " + SNSR_DEFAULT_META_TABLE_NM + " ORDER BY snsr_id ASC LIMIT ?, ?");
+            ps.setInt(1, index);
+            ps.setInt(2, num);
             ResultSet rs = ps.executeQuery();
             while(rs.next())
                 idSet.add(rs.getString("snsr_id"));
@@ -424,19 +460,19 @@ public class SensorMetadataDAO {
             if(defaultMetadata == null)
                 throw new Exception("Can't Get Default Sensor Metadata");
             else
-                sensorMetadata.setDef_meta(defaultMetadata);
+                sensorMetadata.setDefMeta(defaultMetadata);
 
             Map<String, String> optionalMetadataMap = getAllOptionalSensorMetadataMap(id);
             if(optionalMetadataMap == null)
                 throw new Exception("Can't Get Optional Sensor Metadata");
             else
-                sensorMetadata.getOpt_meta().setElmts(optionalMetadataMap);
+                sensorMetadata.setOptMeta(optionalMetadataMap);
 
             Set<String> tagSet = getAllTagBySensorID(id);
             if(tagSet == null)
                 throw new Exception("Can't Get Sensor Tags");
             else
-                sensorMetadata.getSnsr_tag().setTags(tagSet);
+                sensorMetadata.setSnsrTags(tagSet);
         } catch (Exception e) {
             ExceptionProcessor.handleException(e, this.getClass().getName());
             sensorMetadata = null;

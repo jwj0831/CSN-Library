@@ -19,7 +19,7 @@ public class DataSubscriberThread extends Thread implements MqttCallback {
     private static final int MQTT_KEEP_ALIVE_INTERVAL_OPT = 30;
     private static final int MQTT_QOS_OPT = 1;
     private static final String MQTT_BROKER_URL_OPT = "tcp://localhost:1883";
-    private static final String MQTT_CLIENT_ID = "Subs_Node";
+    private static final String MQTT_CLIENT_ID = "Subscriber-Node";
     private static final String MQTT_SUBS_TOPIC = "CSN/CENTRAL/DATA";
 
     private volatile boolean stopped = false;
@@ -73,7 +73,7 @@ public class DataSubscriberThread extends Thread implements MqttCallback {
     @Override
     public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
         String data = mqttMessage.toString();
-
+        logger.info("MQTT MSG Come: {}", data);
         // TODO Implement to parse JSON-STRING
         SensorData sensorData = jsonMapper.readValue(data, SensorData.class);
         try {

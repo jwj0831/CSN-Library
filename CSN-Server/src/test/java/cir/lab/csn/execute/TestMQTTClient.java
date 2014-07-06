@@ -5,6 +5,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.paho.client.mqttv3.*;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -17,11 +20,12 @@ public class TestMQTTClient implements MqttCallback {
     MqttConnectOptions connOpt;
     private ObjectMapper jsonMapper;
 
-    //static final String BROKER_URL = "tcp://117.16.146.55:1883";
-    static final String BROKER_URL = "tcp://localhost:1883";
-    static final String NODE_ID = "Yun-1-1402907293169";
+    static final String BROKER_URL = "tcp://117.16.146.55:1883";
+    //static final String BROKER_URL = "tcp://localhost:1883";
+    static final String NODE_ID = "Node4-1403662105700";
     static final String TOPIC_NAME = "CSN/CENTRAL/DATA";
-    static final int MSG_NUM = 15;
+    //static final String DIST_TOPIC_NAME = "CSN/MULTI/FirstNet/1403703692671";
+    static final int MSG_NUM = 100;
 
     public void connectionLost(Throwable t) {
         System.out.println("Connection lost!");
@@ -38,10 +42,12 @@ public class TestMQTTClient implements MqttCallback {
 
     public static void main(String[] args) {
         TestMQTTClient publisher = new TestMQTTClient();
-
         try {
+            //BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("sendTest.csv"));
             publisher.publishSensorData();
         } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -66,8 +72,7 @@ public class TestMQTTClient implements MqttCallback {
         System.out.println("Connected to " + BROKER_URL);
 
         // Setup topic
-        String myTopic = TOPIC_NAME;
-        MqttTopic topic = myClient.getTopic(myTopic);
+        MqttTopic topic = myClient.getTopic(TOPIC_NAME);
         int randNum = 0;
         jsonMapper = new ObjectMapper();
 
@@ -83,7 +88,7 @@ public class TestMQTTClient implements MqttCallback {
 
             SensorData sensorData = new SensorData(NODE_ID, today, Integer.toString(randNum));
             String jsonStr = jsonMapper.writeValueAsString(sensorData);
-            System.out.println("Pub MSG: " + jsonStr);
+            //System.out.println("Pub MSG: " + jsonStr);
 
             int pubQoS = 0;
             MqttMessage message = new MqttMessage(jsonStr.getBytes());
@@ -98,7 +103,7 @@ public class TestMQTTClient implements MqttCallback {
                 token = topic.publish(message);
                 // Wait until the message has been delivered to the broker
                 token.waitForCompletion();
-                Thread.sleep(500);
+                Thread.sleep(10);
             } catch (Exception e) {
                 e.printStackTrace();
             }

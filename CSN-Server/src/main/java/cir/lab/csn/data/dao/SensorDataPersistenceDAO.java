@@ -27,7 +27,7 @@ public class SensorDataPersistenceDAO {
             Connection c = connectionMaker.makeConnection();
             PreparedStatement ps = c.prepareStatement("INSERT INTO " + SNSR_PERSIST_TABLE_NM + "(snsr_id, snsr_time, snsr_val) VALUES(?, ?, ?)");
 
-            ps.setString(1, sensorData.getUri());
+            ps.setString(1, sensorData.getId());
             ps.setString(2, sensorData.getTime());
             ps.setString(3, sensorData.getVal());
             ps.executeUpdate();

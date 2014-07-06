@@ -21,7 +21,7 @@ public class CLITestMain {
         system.startTest();
 
         try {
-            Thread.sleep(10000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -69,16 +69,17 @@ public class CLITestMain {
                     System.out.println("Broker Total Producer #: " + brokerManager.getTotalProducerCount());
                     System.out.println("Broker Storage %: " + brokerManager.getStoreUsagePercentage());
                     System.out.println("Broker Memory %: " + brokerManager.getMemoryUsagePercentage());
+                    System.out.println("Total Topic Subs: " + brokerManager.getTotalTopicSubscribers());
                     break;
                 case 5:
-                    Map<String, Long> enqMap = brokerManager.getTopicEnqueueCount();
-                    for(String key : enqMap.keySet())
-                        System.out.println("Topic '" + key +"' Enq. Num: " + enqMap.get(key));
+                    Set<Map<String, Object>> enqSet = brokerManager.getTopicEnqueueCount();
+                    for(Map<String, Object> obj : enqSet)
+                        System.out.println("Topic '" + obj.get("topicName") + "' Enq. Num: " + obj.get("num"));
                     break;
                 case 6:
-                    Map<String, Long> deqMap = brokerManager.getTopicDequeueCount();
-                    for(String key : deqMap.keySet())
-                        System.out.println("Topic '" + key +"' Deq. Num: " + deqMap.get(key));
+                    Set<Map<String, Object>> deqSet = brokerManager.getTopicDequeueCount();
+                    for(Map<String, Object> obj : deqSet)
+                        System.out.println("Topic '" + obj.get("topicName") + "' Deq. Num: " + obj.get("num"));
                     break;
                 case 7:
                     Map<String, Long> conMap = brokerManager.getTopicConsumerCount();

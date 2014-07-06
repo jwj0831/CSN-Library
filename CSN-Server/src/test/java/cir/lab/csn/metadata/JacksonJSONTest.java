@@ -46,7 +46,7 @@ public class JacksonJSONTest {
             e.printStackTrace();
         }
 
-        assertEquals(sensorData.getUri(), parsedData.getUri());
+        assertEquals(sensorData.getId(), parsedData.getId());
 
     }
 

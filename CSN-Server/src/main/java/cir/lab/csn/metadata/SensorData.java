@@ -4,7 +4,7 @@ package cir.lab.csn.metadata;
  * Created by nfm on 2014. 5. 20..
  */
 public class SensorData {
-    private String uri;
+    private String id;
     private String time;
     private String val;
 
@@ -12,18 +12,18 @@ public class SensorData {
 
     }
 
-    public SensorData (String uri, String time, String val) {
-        this.uri = uri;
+    public SensorData (String id, String time, String val) {
+        this.id = id;
         this.time = time;
         this.val = val;
     }
 
-    public String getUri() {
-        return uri;
+    public String getId() {
+        return id;
     }
 
-    public void setUri(String uri) {
-        this.uri = uri;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTime() {
@@ -45,7 +45,7 @@ public class SensorData {
     @Override
     public String toString() {
         return "SensorData{" +
-                "uri='" + uri + '\'' +
+                "id='" + id + '\'' +
                 ", time='" + time + '\'' +
                 ", val='" + val + '\'' +
                 '}';

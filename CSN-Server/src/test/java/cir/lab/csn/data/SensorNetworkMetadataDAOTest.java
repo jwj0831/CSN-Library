@@ -491,19 +491,19 @@ public class SensorNetworkMetadataDAOTest {
 
         SensorNetworkMetadata meta = controller.getSensorNetworkMetadata(id);
         assertNotNull(meta);
-        logger.info("ID: {}", meta.getDef_meta().getId());
-        logger.info("Name: {}", meta.getDef_meta().getName());
-        logger.info("Topic Name: {}", meta.getDef_meta().getTopicName());
-        logger.info("Creation Time: {}", meta.getDef_meta().getCreationTime());
+        logger.info("ID: {}", meta.getDefMeta().getId());
+        logger.info("Name: {}", meta.getDefMeta().getName());
+        logger.info("Topic Name: {}", meta.getDefMeta().getTopicName());
+        logger.info("Creation Time: {}", meta.getDefMeta().getCreationTime());
 
-        Iterator<String> tagIter = meta.getSnsr_tag().getTags().iterator();
+        Iterator<String> tagIter = meta.getSnTags().iterator();
         while(tagIter.hasNext()) {
             String iterTag = tagIter.next();
             logger.info("Tag: {}", iterTag);
             assertTrue(tagSet.contains(iterTag));
         }
 
-        Map<String,String> optionalMetadataMap = meta.getOpt_meta().getElmts();
+        Map<String,String> optionalMetadataMap = meta.getOptMeta();
         Iterator<String> optIter = optionalMetadataMap.keySet().iterator();
         while(optIter.hasNext()) {
             optName = optIter.next();
@@ -546,18 +546,18 @@ public class SensorNetworkMetadataDAOTest {
         Iterator<SensorNetworkMetadata> iter = list.iterator();
         while(iter.hasNext()) {
             SensorNetworkMetadata meta = iter.next();
-            logger.info("ID: {}", meta.getDef_meta().getId());
-            logger.info("Name: {}", meta.getDef_meta().getName());
-            logger.info("TopicName: {}", meta.getDef_meta().getTopicName());
-            logger.info("Creation Time: {}", meta.getDef_meta().getCreationTime());
+            logger.info("ID: {}", meta.getDefMeta().getId());
+            logger.info("Name: {}", meta.getDefMeta().getName());
+            logger.info("TopicName: {}", meta.getDefMeta().getTopicName());
+            logger.info("Creation Time: {}", meta.getDefMeta().getCreationTime());
 
-            Iterator<String> tagIter = meta.getSnsr_tag().getTags().iterator();
+            Iterator<String> tagIter = meta.getSnTags().iterator();
             while(tagIter.hasNext()) {
                 String iterTag = tagIter.next();
                 logger.info("Tag: {}", iterTag);
             }
 
-            Map<String,String> optionalMetadataMap = meta.getOpt_meta().getElmts();
+            Map<String,String> optionalMetadataMap = meta.getOptMeta();
             Iterator<String> optIter = optionalMetadataMap.keySet().iterator();
             while(optIter.hasNext()) {
                 String optName = optIter.next();

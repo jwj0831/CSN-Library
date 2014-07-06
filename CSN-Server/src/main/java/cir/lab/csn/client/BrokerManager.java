@@ -33,9 +33,9 @@ public interface BrokerManager {
 
     public void doGarbageCollect();
 
-    public Map<String, Long> getTopicEnqueueCount();
+    public Set<Map<String, Object>> getTopicEnqueueCount();
 
-    public Map<String, Long> getTopicDequeueCount();
+    public Set<Map<String, Object>> getTopicDequeueCount();
 
     public Map<String, Long> getTopicConsumerCount();
 

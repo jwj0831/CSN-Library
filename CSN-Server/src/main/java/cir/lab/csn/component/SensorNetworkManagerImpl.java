@@ -1,8 +1,6 @@
 package cir.lab.csn.component;
 
-//import cir.lab.csn.data.AuthUserType;
 import cir.lab.csn.data.SensorNetworkList;
-//import cir.lab.csn.data.dao.AuthCheckDAO;
 import cir.lab.csn.data.db.CSNDAOFactory;
 import cir.lab.csn.data.DAOReturnType;
 import cir.lab.csn.data.dao.SensorMetadataDAO;
@@ -13,7 +11,6 @@ import cir.lab.csn.metadata.sensor.SensorMetadata;
 import cir.lab.csn.metadata.network.SNDefaultMetadata;
 import cir.lab.csn.metadata.network.SensorNetworkMetadata;
 import cir.lab.csn.util.IDGeneratorUtil;
-//import cir.lab.csn.util.KeyGeneratorUtil;
 import cir.lab.csn.util.TimeGeneratorUtil;
 import cir.lab.csn.util.TopicNameGeneratorUtil;
 import org.slf4j.Logger;
@@ -67,6 +64,36 @@ public class SensorNetworkManagerImpl implements SensorNetworkManager {
         return id;
     }
 
+    @Override
+    public String createSensorMetadata(SensorMetadata metadata) {
+        String creationTime = TimeGeneratorUtil.getCurrentTimestamp();
+        long epoch = TimeGeneratorUtil.convertDateToEpoch(creationTime);
+        String id = IDGeneratorUtil.getSensorID(metadata.getDefMeta().getName(), Long.toString(epoch));
+        //String key = KeyGeneratorUtil.getKey();
+        DAOReturnType retType = sensorMetaDAO.addDefaultSensorMetadata(id, metadata.getDefMeta().getName(), metadata.getDefMeta().getMeasure(), creationTime);
+
+        if (retType == DAOReturnType.RETURN_ERROR)
+            return null;
+        else {
+            Set<String> members = new HashSet<String>();
+            members.add(id);
+            // Add a Single Sensor Network Metadata
+            String singleTopicName = TopicNameGeneratorUtil.getSingleSensorNetworkTopicName(metadata.getDefMeta().getName(), epoch);
+            retType = sensorNetworkMetadataDAO.addDefaultSensorNetworkMetadata(id, metadata.getDefMeta().getName(), creationTime, singleTopicName, members);
+            if (retType == DAOReturnType.RETURN_ERROR)
+                return null;
+
+            addOptionalSensorMetadata(id, metadata.getOptMeta());
+            addTagSetToSensor(id, metadata.getSnsrTags());
+
+            //Add Real-time Data
+            SensorNetworkList.setUpdating(true);
+            SensorNetworkList.registerNewSensorNetwork(singleTopicName, members);
+            SensorNetworkList.setUpdating(false);
+        }
+        return id;
+    }
+
 //    @Override
 //    public boolean isItSensorKey(String key) {
 //        return authCheckDAO.isItSensorKey(key);
@@ -80,6 +107,16 @@ public class SensorNetworkManagerImpl implements SensorNetworkManager {
     @Override
     public Set<String> getAllSensorID() {
         return sensorMetaDAO.getAllSensorID();
+    }
+
+    @Override
+    public int getAllSensorNum() {
+        return sensorMetaDAO.getAllSensorNum();
+    }
+
+    @Override
+    public Set<String> getSensorIDs(int index, int num) {
+        return sensorMetaDAO.getSensorIDs(index, num);
     }
 
     @Override
@@ -217,9 +254,52 @@ public class SensorNetworkManagerImpl implements SensorNetworkManager {
     }
 
     @Override
+    public String createSensorNetworkMetadata(SensorNetworkMetadata metadata) {
+        String creationTime = TimeGeneratorUtil.getCurrentTimestamp();
+        long epoch = TimeGeneratorUtil.convertDateToEpoch(creationTime);
+
+        String id = IDGeneratorUtil.getSensorNetworkID(metadata.getDefMeta().getName(), Long.toString(epoch));
+        String topicName = TopicNameGeneratorUtil.getMultiSensorNetworkTopicName(metadata.getDefMeta().getName(), epoch);
+        DAOReturnType retType = sensorNetworkMetadataDAO.addDefaultSensorNetworkMetadata(id, metadata.getDefMeta().getName(), creationTime, topicName, metadata.getDefMeta().getMembers());
+
+        if (retType == DAOReturnType.RETURN_ERROR)
+            id = null;
+
+        addOptionalSensorNetworkMetadata(id, metadata.getOptMeta());
+        addTagSetToSensorNetwork(id, metadata.getSnTags());
+
+        SensorNetworkList.setUpdating(true);
+        SensorNetworkList.registerNewSensorNetwork(topicName, metadata.getDefMeta().getMembers());
+        SensorNetworkList.setUpdating(false);
+        return id;
+    }
+
+    @Override
     public Set<String> getAllSensorNetworkID() {
         return sensorNetworkMetadataDAO.getAllSensorNetworkID();
     }
+
+    @Override
+    public int getAliveSensorNetworkNum() {
+        return sensorNetworkMetadataDAO.getAliveSensorNetworkNum();
+    }
+
+    @Override
+    public int getDeadSensorNetworkNum() {
+        return sensorNetworkMetadataDAO.getDeadSensorNetworkNum();
+    }
+
+    @Override
+    public int getAllSensorNetworkNum() {
+        return sensorNetworkMetadataDAO.getAllSensorNetworkNum();
+    }
+
+
+    @Override
+    public Set<String> getSensorNetworkIDs(int index, int num) {
+        return sensorNetworkMetadataDAO.getSensorNetworkIDs(index,num);
+    }
+
 
     @Override
     public String getSensorNetworkTopicName(String id) {
@@ -229,6 +309,10 @@ public class SensorNetworkManagerImpl implements SensorNetworkManager {
     @Override
     public Set<String> getAllSensorNetworkTopicName() {
         return sensorNetworkMetadataDAO.getAllSensorNetworkTopicName();
+    }
+
+    @Override public Set<String> getSensorNetworkTopicNames(int index, int num) {
+        return sensorNetworkMetadataDAO.getSensorNetworkTopicNames(index, num);
     }
 
     @Override

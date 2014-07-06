@@ -1,9 +1,6 @@
 package cir.lab.csn.data.db;
 
-import cir.lab.csn.data.dao.AuthCheckDAO;
-import cir.lab.csn.data.dao.SensorDataPersistenceDAO;
-import cir.lab.csn.data.dao.SensorMetadataDAO;
-import cir.lab.csn.data.dao.SensorNetworkMetadataDAO;
+import cir.lab.csn.data.dao.*;
 
 /**
  * Created by nfm on 2014. 5. 20..
@@ -23,6 +20,10 @@ public class CSNDAOFactory {
 
     public SensorDataPersistenceDAO sensorDataPersistenceDAO() {
         return new SensorDataPersistenceDAO(connectionMaker());
+    }
+
+    public SearchDAO searchDAO() {
+        return new SearchDAO(connectionMaker());
     }
 
     public AuthCheckDAO authCheckDAO() {

@@ -1,6 +1,7 @@
 package cir.lab.csn.client;
 
 import cir.lab.csn.component.BrokerManagerImpl;
+import cir.lab.csn.component.HistoricalDataManager;
 import cir.lab.csn.metadata.csn.CSNConfigMetadata;
 
 /**
@@ -32,9 +33,13 @@ public interface CSNOperator {
      */
     public int stopSystem();
 
+    public boolean isCSNWorking();
+
     public CSNConfigMetadata getCsnConfigMetadata();
 
     public SensorNetworkManager getSensorNetworkManager();
 
     public BrokerManager getBrokerManager();
+
+    public HistoricalDataManager getHistoricalDataManager();
 }

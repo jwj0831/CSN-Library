@@ -355,17 +355,17 @@ public class SensorMetadataDAOTest {
 
         SensorMetadata meta = controller.getSensorMetadata(id);
         assertNotNull(meta);
-        logger.info("ID: {}", meta.getDef_meta().getId());
-        logger.info("Name: {}", meta.getDef_meta().getName());
-        logger.info("Creation Time: {}", meta.getDef_meta().getReg_time());
+        logger.info("ID: {}", meta.getDefMeta().getId());
+        logger.info("Name: {}", meta.getDefMeta().getName());
+        logger.info("Creation Time: {}", meta.getDefMeta().getReg_time());
 
-        tagSet = meta.getSnsr_tag().getTags();
+        tagSet = meta.getSnsrTags();
         for(String iterTag : tagSet) {
             logger.info("Tag: {}", iterTag);
             assertTrue(tagSet.contains(iterTag));
         }
 
-        Map<String,String> optionalMetadataMap = meta.getOpt_meta().getElmts();
+        Map<String,String> optionalMetadataMap = meta.getOptMeta();
         Set<String> keySet = optionalMetadataMap.keySet();
         for(String optName : keySet) {
             String optVal = optionalMetadataMap.get(optName);
@@ -414,15 +414,15 @@ public class SensorMetadataDAOTest {
         List<SensorMetadata> list = controller.getAllSensorMetadata();
         assertNotNull(list);
         for(SensorMetadata meta : list ) {
-            logger.info("ID: {}", meta.getDef_meta().getId());
-            logger.info("Name: {}", meta.getDef_meta().getName());
-            logger.info("Creation Time: {}", meta.getDef_meta().getReg_time());
+            logger.info("ID: {}", meta.getDefMeta().getId());
+            logger.info("Name: {}", meta.getDefMeta().getName());
+            logger.info("Creation Time: {}", meta.getDefMeta().getReg_time());
 
-            tagSet = meta.getSnsr_tag().getTags();
+            tagSet = meta.getSnsrTags();
             for(String iterTag : tagSet)
                 logger.info("Tag: {}", iterTag);
 
-            Map<String,String> optionalMetadataMap = meta.getOpt_meta().getElmts();
+            Map<String,String> optionalMetadataMap = meta.getOptMeta();
             Set<String> optNameSet = optionalMetadataMap.keySet();
             for(String optName : optNameSet) {
                 String optVal = optionalMetadataMap.get(optName);

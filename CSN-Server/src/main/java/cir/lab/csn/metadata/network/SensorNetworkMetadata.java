@@ -1,46 +1,46 @@
 package cir.lab.csn.metadata.network;
 
-import cir.lab.csn.metadata.common.OptionalMetadata;
-import cir.lab.csn.metadata.common.TagMetadata;
+import java.util.Map;
+import java.util.Set;
 
 public class SensorNetworkMetadata {
-    private SNDefaultMetadata def_meta;
-    private OptionalMetadata opt_meta = new OptionalMetadata();;
-    private TagMetadata snsr_tag = new TagMetadata();
+    private SNDefaultMetadata defMeta;
+    private Map<String,String> optMeta;
+    private Set<String> snTags;
 
     public SensorNetworkMetadata() {
     }
 
-    public SNDefaultMetadata getDef_meta() {
-        return def_meta;
+    public SNDefaultMetadata getDefMeta() {
+        return defMeta;
     }
 
-    public void setDef_meta(SNDefaultMetadata def_meta) {
-        this.def_meta = def_meta;
+    public void setDefMeta(SNDefaultMetadata defMeta) {
+        this.defMeta = defMeta;
     }
 
-    public OptionalMetadata getOpt_meta() {
-        return opt_meta;
+    public Map<String,String> getOptMeta() {
+        return optMeta;
     }
 
-    public void setOpt_meta(OptionalMetadata opt_meta) {
-        this.opt_meta = opt_meta;
+    public void setOptMeta(Map<String,String> optMeta) {
+        this.optMeta = optMeta;
     }
 
-    public TagMetadata getSnsr_tag() {
-        return snsr_tag;
+    public Set<String> getSnTags() {
+        return snTags;
     }
 
-    public void setSnsr_tag(TagMetadata snsr_tag) {
-        this.snsr_tag = snsr_tag;
+    public void setSnTags(Set<String> snTags) {
+        this.snTags = snTags;
     }
 
     @Override
     public String toString() {
         return "SensorNetworkMetadata{" +
-                "def_meta=" + def_meta +
-                ", opt_meta=" + opt_meta +
-                ", snsr_tag=" + snsr_tag +
+                "defMeta=" + defMeta +
+                ", optMeta=" + optMeta +
+                ", snTags=" + snTags +
                 '}';
     }
 }

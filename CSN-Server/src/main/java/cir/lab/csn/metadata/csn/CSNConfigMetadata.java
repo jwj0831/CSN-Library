@@ -7,7 +7,7 @@ import cir.lab.csn.util.TimeGeneratorUtil;
  */
 // TODO Add more configuration information
 public class CSNConfigMetadata {
-    private String name;
+    private String csnName;
     private String creationTime;
     private String adminName;
     private String adminEmail;
@@ -15,26 +15,26 @@ public class CSNConfigMetadata {
     public CSNConfigMetadata() {
     }
 
-    public CSNConfigMetadata(String name) {
-        this.name = name;
+    public CSNConfigMetadata(String csnName) {
+        this.csnName = csnName;
         this.creationTime = TimeGeneratorUtil.getCurrentTimestamp();
         this.adminName = "";
         this.adminEmail = "";
     }
 
-    public CSNConfigMetadata(String name, String adminName, String adminEmail) {
-        this.name = name;
+    public CSNConfigMetadata(String csnName, String adminName, String adminEmail) {
+        this.csnName = csnName;
         this.creationTime = TimeGeneratorUtil.getCurrentTimestamp();
         this.adminName = adminName;
         this.adminEmail = adminEmail;
     }
 
-    public String getName() {
-        return name;
+    public String getCsnName() {
+        return csnName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCsnName(String csnName) {
+        this.csnName = csnName;
     }
 
     public String getCreationTime() {
@@ -64,7 +64,7 @@ public class CSNConfigMetadata {
     @Override
     public String toString() {
         return "CSNConfigMetadata{" +
-                "name='" + name + '\'' +
+                "csnName='" + csnName + '\'' +
                 ", creationTime='" + creationTime + '\'' +
                 ", adminName='" + adminName + '\'' +
                 ", adminEmail='" + adminEmail + '\'' +
