@@ -1,5 +1,7 @@
 package cir.lab.rest.client;
 
+import java.util.Set;
+
 /**
  * Created by nfm on 2014. 6. 5..
  */
@@ -13,6 +15,9 @@ public interface SensorAPI {
 
     public String getSensorMetadata(String id);
     public String deleteSensorMetadata(String id);
+
+    public Set<String> getSensorNetworkIDs(String id);
+    public Set<String> getTopicNames(String id);
 
     public String postSensorAllOptionalMetadata(String id, String input);
     public String getSensorAllOptionalMetadata(String id);

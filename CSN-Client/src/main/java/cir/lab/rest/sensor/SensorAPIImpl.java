@@ -3,6 +3,10 @@ package cir.lab.rest.sensor;
 import cir.lab.rest.client.SensorAPI;
 import cir.lab.rest.common.RESTMethodAPI;
 import cir.lab.rest.common.ServerConnInfo;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+import java.util.Set;
 
 
 public class SensorAPIImpl implements SensorAPI {
@@ -33,15 +37,46 @@ public class SensorAPIImpl implements SensorAPI {
 
     @Override
     public String getSensorMetadata(String id) {
-        String url = defaultURL +"/" + id;
+        String url = defaultURL + "/" + id;
         return api.getMethod(url);
     }
 
     @Override
     public String deleteSensorMetadata(String id) {
-        String url = defaultURL +"/" + id;
+        String url = defaultURL + "/" + id;
         return api.deleteMethod(url);
     }
+
+    @Override
+    public Set<String> getSensorNetworkIDs(String id) {
+        String url = defaultURL + "/" + id + "/networks";
+        String jsonStr = api.getMethod(url);
+        ObjectMapper mapper = new ObjectMapper();
+        Set<String> ids = null;
+        try {
+            ids = mapper.readValue(jsonStr, Set.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return ids;
+    }
+
+    @Override
+    public Set<String> getTopicNames(String id) {
+        String url = defaultURL +"/" + id + "/networks/topics";
+        String jsonStr = api.getMethod(url);
+        ObjectMapper mapper = new ObjectMapper();
+        Set<String> names = null;
+        try {
+            names = mapper.readValue(jsonStr, Set.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return names;
+    }
+
 
     @Override
     public String postSensorAllOptionalMetadata(String id, String input) {

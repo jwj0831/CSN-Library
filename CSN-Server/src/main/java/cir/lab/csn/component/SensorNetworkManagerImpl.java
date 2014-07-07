@@ -125,6 +125,16 @@ public class SensorNetworkManagerImpl implements SensorNetworkManager {
     }
 
     @Override
+    public Set<String> getSensorNetworkIDsOfSensor(String id){
+        return sensorMetaDAO.getSensorNetworkIDsOfSensor(id);
+    }
+
+    @Override
+    public Set<String> getTopicNamesOfSensor(String id){
+        return sensorMetaDAO.getTopicNamesOfSensor(id);
+    }
+
+    @Override
     public DAOReturnType addOptionalSensorMetadata(String id, String optName, String optVal) {
         return sensorMetaDAO.addOptionalSensorMetadata(id, optName, optVal);
     }

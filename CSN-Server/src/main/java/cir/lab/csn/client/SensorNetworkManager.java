@@ -55,6 +55,11 @@ public interface SensorNetworkManager {
      */
     public DefaultMetadata getDefaultSensorMetadata(String id);
 
+
+    public Set<String> getSensorNetworkIDsOfSensor(String id);
+
+    public Set<String> getTopicNamesOfSensor(String id);
+
     /**
      * This method adds optional sensor metadata into database.
      * @param id Sensor's identifier

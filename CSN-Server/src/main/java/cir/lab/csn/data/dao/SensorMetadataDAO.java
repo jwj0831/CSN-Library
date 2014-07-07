@@ -1,5 +1,6 @@
 package cir.lab.csn.data.dao;
 
+import cir.lab.csn.data.db.CSNDAOFactory;
 import cir.lab.csn.data.db.ConnectionMaker;
 import cir.lab.csn.data.DAOReturnType;
 import cir.lab.csn.metadata.sensor.DefaultMetadata;
@@ -19,6 +20,9 @@ public class SensorMetadataDAO {
     private static final String SNSR_DEFAULT_META_TABLE_NM = "csn_snsr_meta";
     private static final String SNSR_OPT_META_TABLE_NM = "csn_snsr_options";
     private static final String SNSR_TAG_TABLE_NM = "csn_snsr_tags";
+    private static final String SN_MEMBERS_TABLE_NM = "csn_sn_members";
+
+    private SensorNetworkMetadataDAO sensorNetworkMetadataDAO = new CSNDAOFactory().sensorNetworkMetadataDAO();
 
     private ConnectionMaker connectionMaker;
 
@@ -124,6 +128,43 @@ public class SensorMetadataDAO {
             metadata = null;
         }
         return metadata;
+    }
+
+    public Set<String> getSensorNetworkIDsOfSensor(String id){
+        Set<String> snIDs = new HashSet<String>();
+        try {
+            Connection c = connectionMaker.makeConnection();
+            PreparedStatement ps = c.prepareStatement("SELECT sn_id FROM "+ SN_MEMBERS_TABLE_NM +" WHERE snsr_member =?");
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                String snID= rs.getString("sn_id");
+                snIDs.add(snID);
+            }
+
+            ps.close();
+            c.close();
+        } catch (Exception e) {
+            ExceptionProcessor.handleException(e, this.getClass().getName());
+            snIDs = null;
+        }
+        return snIDs;
+    }
+
+    public Set<String> getTopicNamesOfSensor(String id){
+        Set<String> topicNames = new HashSet<String>();
+        Set<String> snIDs = this.getSensorNetworkIDsOfSensor(id);
+
+        Iterator<String> iter = snIDs.iterator();
+
+        while(iter.hasNext()) {
+            String snID = iter.next();
+            String topicName = sensorNetworkMetadataDAO.getSensorNetworkTopicNameByID(snID);
+            topicNames.add(topicName);
+        }
+
+        return topicNames;
     }
 
     public DAOReturnType addOptionalSensorMetadata(String id, String optName, String optVal) {

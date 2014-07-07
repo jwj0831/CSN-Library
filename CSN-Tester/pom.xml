@@ -18,5 +18,15 @@
             <artifactId>mqtt-client</artifactId>
             <version>0.4.0</version>
         </dependency>
+        <dependency>
+            <groupId>cir.lab</groupId>
+            <artifactId>CSN-Server</artifactId>
+            <version>0.8.1</version>
+        </dependency>
+        <dependency>
+            <groupId>CIR.LAB</groupId>
+            <artifactId>CSN-Client</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 </project>
