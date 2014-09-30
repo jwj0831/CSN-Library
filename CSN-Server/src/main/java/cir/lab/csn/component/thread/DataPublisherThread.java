@@ -124,8 +124,8 @@ public class DataPublisherThread extends Thread implements MqttCallback {
                 Set<String> sensorSet = SensorNetworkList.getSensorNetworkListMap().get(snTopicName);
                 if (sensorSet.contains(sensorData.getId())) {
                     logger.info("Current Sensor Data is a member of {}", snTopicName);
-                    if(snTopicName.substring(0,10).compareTo("CSN.SINGLE") == 0)
-                        snTopicName = "CSN.SINGLE.PERSIST";
+//                    if(snTopicName.substring(0,10).compareTo("CSN.SINGLE") == 0)
+//                        snTopicName = "CSN.SINGLE.PERSIST";
 
                     String mqttTopicName = snTopicName.replace('.', '/');
                     // Setup topic

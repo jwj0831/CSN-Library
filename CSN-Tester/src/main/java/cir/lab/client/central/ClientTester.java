@@ -23,14 +23,10 @@ public class ClientTester implements MqttCallback {
 
     static final String BROKER_URL = "tcp://117.16.146.55:1883";
 
-    static final String NODE_ID = "Node1-1403634195838";
-    //static final String NODE_ID = "Node2-1403661725203";
-    //static final String NODE_ID = "Node4-1403662105700";
-    //static final String NODE_ID = "Node11-1403662835072";
-    //static final String NODE_ID = "Node13-1403662872002";
+    static final String NODE_ID = "123-1412003319589";
 
-    static final int MSG_NUM = 10;
-    static final String TOPIC_NAME = "CSN/CENTRAL/DATA";
+    static final int MSG_NUM = 300;
+    static final String TOPIC_NAME = "CSN.CENTRAL.DATA";
 
     private StopWatch stopWatch;
     private BufferedWriter bw;
@@ -100,7 +96,7 @@ public class ClientTester implements MqttCallback {
 
             SensorData sensorData = new SensorData(NODE_ID, today, Integer.toString(randNum));
             String jsonStr = jsonMapper.writeValueAsString(sensorData);
-            //System.out.println("Pub MSG: " + jsonStr);
+            System.out.println("Pub MSG: " + jsonStr);
 
             int pubQoS = 0;
             MqttMessage message = new MqttMessage(jsonStr.getBytes());
@@ -116,7 +112,7 @@ public class ClientTester implements MqttCallback {
                 token = mqttTopic.publish(message);
                 // Wait until the message has been delivered to the broker
                 token.waitForCompletion();
-                //Thread.sleep(10);
+                Thread.sleep(100);
                 stopWatch.split();
                 String testTime = i + "," + stopWatch.getTime();
                 if(i == 50 || i == 100) {

@@ -18,7 +18,7 @@ public class Receiver1 implements MqttCallback {
     private static final int MQTT_QOS_OPT = 1;
     private static final String MQTT_BROKER_URL_OPT = "tcp://117.16.146.55:1883";
     private static final String MQTT_CLIENT_ID = "Receiver-Node-1";
-    private static final String MQTT_RCV_TOPIC = "CSN/MULTI/FirstNet/1403703692671";
+    private static final String MQTT_RCV_TOPIC = "CSN.MULTI.GRP-1.1409414811283";
     private StopWatch stopWatch;
     private BufferedWriter bw;
     private int sleepTime = CommonTime.SLEEP_TIME;
